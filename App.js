@@ -27,9 +27,11 @@ export default function App() {
    */
   useEffect(() => { // the component has been loaded (life cycle of the component)
 
-    /**
-     * Do a REST Api call
-     */
+    fetchDeviceInfo();
+
+  }, []);
+
+  const fetchDeviceInfo = () => {
     fetch('https://607a0ad7bd56a60017ba264c.mockapi.io/device',
         requestOptions)// the call to fetch data
         // doing work xyz
@@ -38,18 +40,52 @@ export default function App() {
         .then(result => {
           setLoading(false);
           setData(result);
-          console.log(result);
         }) // promise to handle/process the data
         .catch(error => console.log('error', error));
+  };
 
-  }, []);
+  const toggleSwitchForItem = (item) => {
+    const {id} = item;
+    console.log('Starting request');
+
+    const myHeaders = new Headers();
+    myHeaders.append('Content-Type', 'application/json');
+
+    //TODO: hint!
+    const raw = JSON.stringify({
+      'name': 'Hello world',
+    });
+
+    const requestOptions = {
+      method: 'PUT',
+      body: raw,
+      headers: myHeaders,
+      redirect: 'follow',
+    };
+
+    const url = `https://607a0ad7bd56a60017ba264c.mockapi.io/device/${id}`;
+
+    fetch(url,
+        requestOptions).
+        then(response => response.text()).
+        then(result => {
+          console.log(result);
+          fetchDeviceInfo();
+        }).
+        catch(error => console.log('error', error));
+  };
 
   const renderItem = ({item}) => {
+    const {isOn} = item;
     return <View>
       <Text key={item.id}>
         Device Name: {item.name}
       </Text>
-      <Switch value={item.isOn} />
+      <Switch value={isOn} onValueChange={
+        (isOn) => {
+          toggleSwitchForItem(item);
+        }
+      }/>
     </View>;
   };
 
