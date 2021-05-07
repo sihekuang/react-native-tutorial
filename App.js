@@ -51,9 +51,8 @@ export default function App() {
     const myHeaders = new Headers();
     myHeaders.append('Content-Type', 'application/json');
 
-    //TODO: hint!
     const raw = JSON.stringify({
-      'name': 'Hello world',
+      'isOn': !item.isOn,
     });
 
     const requestOptions = {
