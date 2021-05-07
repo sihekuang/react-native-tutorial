@@ -1,5 +1,5 @@
 import {StatusBar} from 'expo-status-bar';
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {
   StyleSheet,
   Text,
@@ -9,6 +9,8 @@ import {
   ActivityIndicator,
   FlatList, Switch,
 } from 'react-native';
+import LottieView from 'lottie-react-native';
+import LightBulb from './assets/light-bulb.json';
 
 export default function App() {
 
@@ -21,6 +23,7 @@ export default function App() {
   const [state, setState] = useState({myText: 'Hello!'}); // state hook
   const [isLoading, setLoading] = useState(true); // state hook
   const [data, setData] = useState([]); // state hook
+  const lightBulbAnimation = useRef(null);
 
   /**
    * UseEffect consumes a method and that method is called when the React Component is loaded on the UI
@@ -29,7 +32,9 @@ export default function App() {
 
     fetchDeviceInfo();
 
+
   }, []);
+
 
   const fetchDeviceInfo = () => {
     fetch('https://607a0ad7bd56a60017ba264c.mockapi.io/device',
@@ -100,6 +105,10 @@ export default function App() {
         <Text>{state.myText}</Text>
         <Button title="Text Changer" onPress={changeTextValue} color="magenta"/>
 
+        <LottieView
+            source={LightBulb}
+            autoPlay={true}
+        />
 
         {isLoading ? <ActivityIndicator size="large" color="#0000ff"/> : (
             <FlatList
