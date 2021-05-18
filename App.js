@@ -11,6 +11,8 @@ import {
 } from 'react-native';
 import LottieView from 'lottie-react-native';
 import LightBulb from './assets/light-bulb.json';
+import Robot from './assets/robot.json';
+import Puppy from './assets/strained-pup.json';
 
 export default function App() {
 
@@ -108,7 +110,7 @@ export default function App() {
         <Button title="Text Changer" onPress={changeTextValue} color="magenta"/>
 
         <LottieView
-            source={LightBulb}
+            source={Puppy}
             autoPlay={true}
         />
 
