@@ -34,9 +34,7 @@ export default function App() {
 
     fetchDeviceInfo();
 
-
   }, []);
-
 
   const fetchDeviceInfo = () => {
     fetch('https://607a0ad7bd56a60017ba264c.mockapi.io/device',
@@ -81,17 +79,14 @@ export default function App() {
         catch(error => console.log('error', error));
   };
 
-  const [myOn, setMyOn] = useState(true);
   const renderItem = ({item}) => {
-    const {isOn} = item;
     return <View>
       <Text key={item.id}>
         Device Name: {item.name}
       </Text>
-      <Switch value={myOn} onValueChange={
+      <Switch value={item.isOn} onValueChange={
         (isOn) => {
-          // toggleSwitchForItem(item);
-          setMyOn(!myOn);
+          toggleSwitchForItem(item);
         }
       }/>
     </View>;
@@ -104,15 +99,19 @@ export default function App() {
     setState({myText: 'Changed Text!'});
   };
 
+  const animationView = useRef(null);
   return (
       <SafeAreaView style={styles.container}>
         <Text>{state.myText}</Text>
         <Button title="Text Changer" onPress={changeTextValue} color="magenta"/>
 
         <LottieView
-            source={Puppy}
-            autoPlay={true}
+            ref={animationView}
+            source={LightBulb}
+            autoPlay={false}
+            loop={false}
         />
+
 
         {isLoading ? <ActivityIndicator size="large" color="#0000ff"/> : (
             <FlatList
@@ -122,6 +121,10 @@ export default function App() {
             />
         )}
 
+        <Button title="Click to play animation" onPress={() => {
+          animationView.current.play();
+          //this triggers the animation to play
+        }}/>
         <StatusBar style="auto"/>
       </SafeAreaView>
   );
