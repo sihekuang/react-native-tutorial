@@ -79,15 +79,17 @@ export default function App() {
         catch(error => console.log('error', error));
   };
 
+  const [myOn, setMyOn] = useState(true);
   const renderItem = ({item}) => {
     const {isOn} = item;
     return <View>
       <Text key={item.id}>
         Device Name: {item.name}
       </Text>
-      <Switch value={isOn} onValueChange={
+      <Switch value={myOn} onValueChange={
         (isOn) => {
-          toggleSwitchForItem(item);
+          // toggleSwitchForItem(item);
+          setMyOn(!myOn);
         }
       }/>
     </View>;
