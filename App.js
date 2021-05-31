@@ -37,7 +37,7 @@ export default function App() {
   }, []);
 
   const fetchDeviceInfo = () => {
-    fetch('https://607a0ad7bd56a60017ba264c.mockapi.io/device',
+    fetch('https://techxiothomebackend.azurewebsites.net/list/nitesh-filigree',
         requestOptions)// the call to fetch data
         // doing work xyz
         .then( // when the response comes back
@@ -102,8 +102,7 @@ export default function App() {
   const animationView = useRef(null);
   return (
       <SafeAreaView style={styles.container}>
-        <Text>{state.myText}</Text>
-        <Button title="Text Changer" onPress={changeTextValue} color="magenta"/>
+        <Text style={{color: "magenta", fontSize: 30, margin: 20}}>Device List</Text>
 
         <LottieView
             ref={animationView}
