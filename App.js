@@ -22,10 +22,11 @@ export default function App() {
     redirect: 'follow',
   };
   // React hooks
-  const [state, setState] = useState({myText: 'Hello!'}); // state hook
   const [isLoading, setLoading] = useState(true); // state hook
   const [data, setData] = useState([]); // state hook
   const lightBulbAnimation = useRef(null);
+
+
 
   /**
    * UseEffect consumes a method and that method is called when the React Component is loaded on the UI
@@ -49,25 +50,40 @@ export default function App() {
         .catch(error => console.log('error', error));
   };
 
-  const toggleSwitchForItem = (item) => {
-    const {id} = item;
+  /**
+   *
+   * @param item - the model coming back from the server
+   * i.e.
+   *  item: {
+    "name": "Signify Netherlands B.V.",
+    "network_address": 28504,
+    "endpoint": 11,
+    "cluster_ids": "0x0000,0x0003,0x0004,0x0005,0x0006,0x0008,0x1000,0xFC02,",
+    "reports0": "N/A",
+    "reports1": "N/A",
+    "reports2": "N/A"
+  }
+   * device_id is always "nitesh-filigree"
+   */
+  const toggleDeviceState = (item, url) => {
+    const {network_address} = item;
     console.log('Starting request');
 
     const myHeaders = new Headers();
     myHeaders.append('Content-Type', 'application/json');
 
     const raw = JSON.stringify({
-      'isOn': !item.isOn,
+      'network_address': network_address,
+      'device_id': 'nitesh-filigree',
     });
 
     const requestOptions = {
-      method: 'PUT',
+      method: 'PATCH',
       body: raw,
       headers: myHeaders,
       redirect: 'follow',
     };
 
-    const url = `https://607a0ad7bd56a60017ba264c.mockapi.io/device/${id}`;
 
     fetch(url,
         requestOptions).
@@ -80,29 +96,34 @@ export default function App() {
   };
 
   const renderItem = ({item}) => {
+
+
+
     return <View>
       <Text key={item.id}>
         Device Name: {item.name}
       </Text>
       <Switch value={item.isOn} onValueChange={
         (isOn) => {
-          toggleSwitchForItem(item);
+
+          // solution 1 - check name of the device AKA item.name
+          // solution 2 - check the cluster ids
+          // if this is a doorlock
+          // if(item.cluster_ids.contains("0x0101"))??
+          toggleDeviceState(item, "https://techxiothomebackend.azurewebsites.net/doorlock/unlock");
+
+          // if this is a light
+          toggleDeviceState(item, "https://techxiothomebackend.azurewebsites.net/power/on");
         }
       }/>
     </View>;
   };
 
-  /**
-   * Changes the "state" that is declared in the hook
-   */
-  const changeTextValue = () => {
-    setState({myText: 'Changed Text!'});
-  };
-
   const animationView = useRef(null);
   return (
       <SafeAreaView style={styles.container}>
-        <Text style={{color: "magenta", fontSize: 30, margin: 20}}>Device List</Text>
+        <Text style={{color: 'magenta', fontSize: 30, margin: 20}}>Device
+          List</Text>
 
         <LottieView
             ref={animationView}
