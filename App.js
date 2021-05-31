@@ -26,8 +26,6 @@ export default function App() {
   const [data, setData] = useState([]); // state hook
   const lightBulbAnimation = useRef(null);
 
-
-
   /**
    * UseEffect consumes a method and that method is called when the React Component is loaded on the UI
    */
@@ -45,7 +43,18 @@ export default function App() {
             response => response.json()) // promise to handle/process the data https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise
         .then(result => {
           setLoading(false);
-          setData(result);
+
+          const updatedValues = result.map((item) => {
+            if (item.network_address === 0) {
+              return null;
+            }
+            item.isOn = false;
+            return item;
+          }).filter((el) => {
+            return el !== null;
+          }); // only select the device that has the right values
+
+          setData(updatedValues);
         }) // promise to handle/process the data
         .catch(error => console.log('error', error));
   };
@@ -77,6 +86,19 @@ export default function App() {
       'device_id': 'nitesh-filigree',
     });
 
+    const newItem = {...item, isOn: !item.isOn};
+
+    const newList = data.map((i) => {
+      if (i.network_address !== item.network_address) {
+        return i;
+      } else {
+        return newItem;
+      }
+    });
+
+    setData(newList);
+    console.log(newList);
+
     const requestOptions = {
       method: 'PATCH',
       body: raw,
@@ -84,20 +106,17 @@ export default function App() {
       redirect: 'follow',
     };
 
-
     fetch(url,
         requestOptions).
         then(response => response.text()).
         then(result => {
           console.log(result);
-          fetchDeviceInfo();
+          // fetchDeviceInfo();
         }).
         catch(error => console.log('error', error));
   };
 
   const renderItem = ({item}) => {
-
-
 
     return <View>
       <Text key={item.id}>
@@ -110,10 +129,12 @@ export default function App() {
           // solution 2 - check the cluster ids
           // if this is a doorlock
           // if(item.cluster_ids.contains("0x0101"))??
-          toggleDeviceState(item, "https://techxiothomebackend.azurewebsites.net/doorlock/unlock");
+          toggleDeviceState(item,
+              'https://techxiothomebackend.azurewebsites.net/doorlock/unlock');
 
           // if this is a light
-          toggleDeviceState(item, "https://techxiothomebackend.azurewebsites.net/power/on");
+          toggleDeviceState(item,
+              'https://techxiothomebackend.azurewebsites.net/power/on');
         }
       }/>
     </View>;
