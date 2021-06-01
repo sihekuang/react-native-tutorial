@@ -129,14 +129,15 @@ export default function App() {
           // solution 2 - check the cluster ids
           // if this is a doorlock
           // if(item.cluster_ids.contains("0x0101"))??
-          console.log(item);
-          if(item.cluster_ids.includes("0x0101")) {
+          // console.log(item);
+          if (item.cluster_ids.includes('0x0101')) {
+            const action = isOn ? 'unlock' : 'lock';
             toggleDeviceState(item,
-                'https://techxiothomebackend.azurewebsites.net/doorlock/unlock');
+                'https://techxiothomebackend.azurewebsites.net/doorlock/' + action);
           }
 
           // if this is a light
-          if(item.cluster_ids.includes("0x1000")) {
+          if (item.cluster_ids.includes('0x1000')) {
             toggleDeviceState(item,
                 'https://techxiothomebackend.azurewebsites.net/power/on');
           }
