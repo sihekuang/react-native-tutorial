@@ -134,12 +134,15 @@ export default function App() {
             const action = isOn ? 'unlock' : 'lock';
             toggleDeviceState(item,
                 'https://techxiothomebackend.azurewebsites.net/doorlock/' + action);
+            animationView.current.play();
           }
 
           // if this is a light
           if (item.cluster_ids.includes('0x1000')) {
+            const action = isOn ? 'off' : 'on';
             toggleDeviceState(item,
-                'https://techxiothomebackend.azurewebsites.net/power/on');
+                'https://techxiothomebackend.azurewebsites.net/power/' + action);
+            animationView.current.play();
           }
         }
       }/>
