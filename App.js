@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import LottieView from 'lottie-react-native';
 import LightBulb from './assets/light-bulb.json';
+import Lock from './assets/lock.json';
 import Robot from './assets/robot.json';
 import Puppy from './assets/strained-pup.json';
 
@@ -157,11 +158,11 @@ export default function App() {
 
         <LottieView
             ref={animationView}
+            //source={item.cluster_ids.includes('0x1000') ? LightBulb : Lock}
             source={LightBulb}
             autoPlay={false}
             loop={false}
         />
-
 
         {isLoading ? <ActivityIndicator size="large" color="#0000ff"/> : (
             <FlatList
