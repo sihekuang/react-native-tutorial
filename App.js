@@ -140,7 +140,7 @@ export default function App() {
 
           // if this is a light
           if (item.cluster_ids.includes('0x1000')) {
-            const action = isOn ? 'off' : 'on';
+            const action = isOn ? 'on' : 'off';
             toggleDeviceState(item,
                 'https://techxiothomebackend.azurewebsites.net/power/' + action);
             animationView.current.play();
