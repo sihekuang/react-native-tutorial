@@ -148,7 +148,7 @@ h
         }
       }/>
     </View>;
-  };
+  }; //
 
   const animationView = useRef(null);
   return (
