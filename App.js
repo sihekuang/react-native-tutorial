@@ -31,7 +31,7 @@ export default function App() {
    * UseEffect consumes a method and that method is called when the React Component is loaded on the UI
    */
   useEffect(() => { // the component has been loaded (life cycle of the component)
-
+h
     fetchDeviceInfo();
 
   }, []);
